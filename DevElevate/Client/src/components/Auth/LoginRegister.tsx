@@ -1,27 +1,48 @@
-import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, User, Shield, Mail, Lock, UserPlus, LogIn, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import {
+  Eye,
+  EyeOff,
+  User,
+  Shield,
+  Mail,
+  Lock,
+  UserPlus,
+  LogIn,
+  AlertCircle,
+} from "lucide-react";
 
 const LoginRegister: React.FC = () => {
   const { state, login, register, dispatch } = useAuth();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [role, setRole] = useState<'user' | 'admin'>('user');
+  const [role, setRole] = useState<"user" | "admin">("user");
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
+
+  useEffect(() => {
+    console.log("LoginRegister useEffect - state.user:", state.user);
+    if (state.isAuthenticated && state.user) {
+      if (state.user.role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
+    }
+  }, [state.isAuthenticated, state.user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch({ type: 'CLEAR_ERROR' });
+    dispatch({ type: "CLEAR_ERROR" });
 
     if (!isLogin && formData.password !== formData.confirmPassword) {
-      dispatch({ type: 'LOGIN_FAILURE', payload: 'Passwords do not match' });
+      dispatch({ type: "LOGIN_FAILURE", payload: "Passwords do not match" });
       return;
     }
 
@@ -31,26 +52,22 @@ const LoginRegister: React.FC = () => {
       } else {
         await register(formData.name, formData.email, formData.password, role);
       }
-      
-      // Redirect based on role
-      if (role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
+      // Remove the redirect from here!
     } catch (error) {
-      console.error('Auth error:', error);
+      console.error("Auth error:", error);
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
-  {/*Password strength login */}
+  {
+    /*Password strength login */
+  }
   const getPasswordStrength = (password: string) => {
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -58,66 +75,82 @@ const LoginRegister: React.FC = () => {
     if (/[0-9]/.test(password)) strength++;
     if (/[^A-Za-z0-9]/.test(password)) strength++;
 
-    if (strength <= 1) return { label: 'Weak', color: 'text-red-500' };
-    if (strength === 2 || strength === 3) return { label: 'Medium', color: 'text-yellow-500' };
-    return { label: 'Strong', color: 'text-green-500' };
+    if (strength <= 1) return { label: "Weak", color: "text-red-500" };
+    if (strength === 2 || strength === 3)
+      return { label: "Medium", color: "text-yellow-500" };
+    return { label: "Strong", color: "text-green-500" };
   };
   const strength = getPasswordStrength(formData.password);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-gray-900 dark:to-gray-800">
+      <div className="w-full max-w-md p-8 bg-white shadow-2xl dark:bg-gray-800 rounded-2xl">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <div className="mb-8 text-center">
+          <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-500 to-purple-600">
             <User className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            {isLogin ? 'Welcome Back!' : 'Join DevElevate'}
+          <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">
+            {isLogin ? "Welcome Back!" : "Join DevElevate"}
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
-            {isLogin ? 'Sign in to continue your learning journey' : 'Start your learning journey today'}
+            {isLogin
+              ? "Sign in to continue your learning journey"
+              : "Start your learning journey today"}
           </p>
         </div>
 
         {/* Role Toggle */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+          <label className="block mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">
             Select Role
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            {/* User Button */}
             <button
               type="button"
-              onClick={() => setRole('user')}
-              className={`p-3 rounded-lg border-2 transition-all ${
-                role === 'user'
-                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                  : 'border-gray-200 dark:border-gray-700'
+              onClick={() => setRole("user")}
+              className={`flex flex-col items-center justify-center gap-1  px-3 py-2  rounded-xl border-2 transition-all duration-200 ${
+                role === "user"
+                  ? "border-blue-500 bg-blue-100 dark:bg-blue-900/20"
+                  : "border-gray-300 dark:border-gray-700 hover:border-blue-400"
               }`}
             >
-              <User className="w-5 h-5 mx-auto mb-1 text-blue-500" />
-              <span className="text-sm font-medium text-gray-900 dark:text-white">User</span>
+              <div className=" flex items-center justify-center gap-3">
+                <User size={25} className="w-6 h-6 text-blue-500" />
+                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                  User
+                </span>
+              </div>
             </button>
+
+            {/* Admin Button */}
             <button
               type="button"
-              onClick={() => setRole('admin')}
-              className={`p-3 rounded-lg border-2 transition-all ${
-                role === 'admin'
-                  ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                  : 'border-gray-200 dark:border-gray-700'
+              onClick={() => setRole("admin")}
+              className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl border-2 transition-all duration-200 ${
+                role === "admin"
+                  ? "border-purple-500 bg-purple-100 dark:bg-purple-900/20"
+                  : "border-gray-300 dark:border-gray-700 hover:border-purple-400"
               }`}
             >
-              <Shield className="w-5 h-5 mx-auto mb-1 text-purple-500" />
-              <span className="text-sm font-medium text-gray-900 dark:text-white">Admin</span>
+              <div className="flex items-center justify-center gap-3">
+                <Shield size={25} className=" text-purple-600" />
+                <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                  Admin
+                </span>
+              </div>
             </button>
           </div>
         </div>
 
         {/* Error Message */}
         {state.error && (
-          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg flex items-center space-x-2">
+          <div className="flex items-center p-3 mb-4 space-x-2 border border-red-200 rounded-lg bg-red-50 dark:bg-red-900/20 dark:border-red-800">
             <AlertCircle className="w-5 h-5 text-red-500" />
-            <span className="text-sm text-red-700 dark:text-red-400">{state.error}</span>
+            <span className="text-sm text-red-700 dark:text-red-400">
+              {state.error}
+            </span>
           </div>
         )}
 
@@ -125,17 +158,17 @@ const LoginRegister: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLogin && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                 Full Name
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <User className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full py-3 pl-10 pr-4 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   placeholder="Enter your full name"
                   required={!isLogin}
                 />
@@ -144,17 +177,17 @@ const LoginRegister: React.FC = () => {
           )}
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Mail className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full py-3 pl-10 pr-4 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 placeholder="Enter your email"
                 required
               />
@@ -162,46 +195,52 @@ const LoginRegister: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Lock className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showPassword ? "text" : "password"}
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="w-full pl-10 pr-12 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full py-3 pl-10 pr-12 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                 placeholder="Enter your password"
                 required
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute text-gray-400 transform -translate-y-1/2 right-3 top-1/2 hover:text-gray-600"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
             {!isLogin && formData.password && (
-              <span className={`mt-2 text-sm font-semibold ${strength.color}`}>Strength: {strength.label}</span>
+              <span className={`mt-2 text-sm font-semibold ${strength.color}`}>
+                Strength: {strength.label}
+              </span>
             )}
           </div>
 
           {!isLogin && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Lock className="absolute w-5 h-5 text-gray-400 transform -translate-y-1/2 left-3 top-1/2" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full py-3 pl-10 pr-4 text-gray-900 bg-white border border-gray-300 rounded-lg dark:border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
                   placeholder="Confirm your password"
                   required={!isLogin}
                 />
@@ -212,14 +251,18 @@ const LoginRegister: React.FC = () => {
           <button
             type="submit"
             disabled={state.isLoading}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center w-full py-3 space-x-2 font-semibold text-white transition-all duration-200 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {state.isLoading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-white rounded-full border-t-transparent animate-spin" />
             ) : (
               <>
-                {isLogin ? <LogIn className="w-5 h-5" /> : <UserPlus className="w-5 h-5" />}
-                <span>{isLogin ? 'Sign In' : 'Create Account'}</span>
+                {isLogin ? (
+                  <LogIn className="w-5 h-5" />
+                ) : (
+                  <UserPlus className="w-5 h-5" />
+                )}
+                <span>{isLogin ? "Sign In" : "Create Account"}</span>
               </>
             )}
           </button>
@@ -231,21 +274,11 @@ const LoginRegister: React.FC = () => {
             {isLogin ? "Don't have an account?" : "Already have an account?"}
             <button
               onClick={() => setIsLogin(!isLogin)}
-              className="ml-2 text-blue-500 hover:text-blue-600 font-semibold"
+              className="ml-2 font-semibold text-blue-500 hover:text-blue-600"
             >
-              {isLogin ? 'Sign Up' : 'Sign In'}
+              {isLogin ? "Sign Up" : "Sign In"}
             </button>
           </p>
-        </div>
-
-        {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-          <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Demo Credentials:</h4>
-          <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-            <p><strong>Email:</strong> any@email.com</p>
-            <p><strong>Password:</strong> password123</p>
-            <p><strong>Note:</strong> Use any email with the password above</p>
-          </div>
         </div>
       </div>
     </div>

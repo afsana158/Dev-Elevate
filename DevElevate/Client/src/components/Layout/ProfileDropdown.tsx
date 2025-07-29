@@ -31,7 +31,19 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ isOpen, onClose }) =>
     };
   }, [isOpen, onClose]);
 
-  const menuItems = [
+  type MenuItem = {
+    icon: React.ElementType;
+    label: string;
+    action: () => void | Promise<void> | Window | null;
+    highlight?: boolean;
+  };
+
+  type MenuSection = {
+    section: string;
+    items: MenuItem[];
+  };
+
+  const menuItems: MenuSection[] = [
     {
       section: 'Account',
       items: [

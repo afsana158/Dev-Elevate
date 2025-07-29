@@ -90,12 +90,12 @@ const LearningHub: React.FC = () => {
         {toastMessage && (
             <Toast message={toastMessage} onClose={() => setToastMessage("")} darkMode={state.darkMode} />
         )}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className={`text-3xl font-bold ${state.darkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="mb-10">
+          <h1 className={`text-3xl font-extrabold tracking-tight ${state.darkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
             Learning Hub
           </h1>
-          <p className={`text-lg ${state.darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p className={`text-lg leading-relaxed  ${state.darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             Master the skills you need for your tech career
           </p>
         </div>
@@ -140,16 +140,16 @@ const LearningHub: React.FC = () => {
 
           {/* Module Content */}
           <div className="lg:col-span-3">
-            <div className={`${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-6 border shadow-sm`}>
+            <div className={`${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-6 border shadow-sm transition-all duration-200`}>
               <div className="flex items-center space-x-3 mb-6">
-                <div className={`p-3 rounded-lg bg-gradient-to-r ${currentTrack.color}`}>
+                <div className={`p-3 rounded-lg bg-gradient-to-r ${currentTrack.color} shadow-md`}>
                   <currentTrack.icon className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className={`text-2xl font-bold ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+                  <h2 className={`text-2xl font-bold leading-tight ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
                     {currentTrack.title}
                   </h2>
-                  <p className={`${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <p className={`${state.darkMode ? 'text-gray-400' : 'text-gray-600'} text-sm`}>
                     {currentTrack.modules.length} modules • Interactive learning
                   </p>
                 </div>
@@ -159,13 +159,13 @@ const LearningHub: React.FC = () => {
                 {currentTrack.modules.map((module, index) => (
                   <div
                     key={module.id}
-                    className={`p-6 rounded-lg border ${
-                      state.darkMode ? 'border-gray-700' : 'border-gray-200'
+                    className={`p-6 rounded-lg border group transition-all duration-200 ${
+                      state.darkMode ? 'border-gray-700 bg-gray-800 hover:shadow-lg' : 'border-gray-200 bg-white hover:shadow-md'
                     } hover:shadow-md transition-shadow`}
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center space-x-3">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      <div className="flex items-center space-x-4">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold text-sm shadow-sm ${
                           module.completed
                             ? 'bg-green-500 text-white'
                             : state.darkMode
@@ -175,7 +175,7 @@ const LearningHub: React.FC = () => {
                           {module.completed ? <CheckCircle className="w-5 h-5" /> : index + 1}
                         </div>
                         <div>
-                          <h3 className={`font-semibold ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+                          <h3 className={`font-semibold leading-tight ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
                             {module.title}
                           </h3>
                           <p className={`text-sm ${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -184,49 +184,53 @@ const LearningHub: React.FC = () => {
                         </div>
                       </div>
                       {module.completed && (
-                        <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">
+                        <span className="px-2 py-0.5 bg-green-200 text-green-800 text-xs rounded-full font-medium">
                           Complete
                         </span>
                       )}
                     </div>
 
                     <div className="mb-4">
-                      <h4 className={`text-sm font-medium mb-2 ${state.darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      <h4 className={`text-sm font-semibold mb-3 tracking-wide ${state.darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                         Topics Covered:
                       </h4>
-                      <ul className="space-y-1">
+                      <ul className="space-y-1.5">
                         {module.topics.map((topic, topicIndex) => (
                           <li
                             key={topicIndex}
-                            className={`text-sm flex items-center space-x-2 ${
+                            className={`text-sm flex items-center gap-2 ${
                               state.darkMode ? 'text-gray-400' : 'text-gray-600'
                             }`}
                           >
-                            <div className="w-1 h-1 bg-current rounded-full"></div>
-                            <span>{topic}</span>
+                           <span
+                            className={`w-2 h-2 rounded-full ${
+                            state.darkMode ? 'bg-gray-500' : 'bg-gray-400'
+                            }`}
+                            ></span>
+                          <span className="leading-snug">{topic}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
-                    <div className="flex space-x-3">
+                    <div className="flex flex-wrap gap-3">
                       <button
                         onClick={() => startModule(module.id)}
-                        className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium transition-colors ${
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors shadow-sm ${
                           module.completed
                             ? 'bg-green-500 hover:bg-green-600 text-white'
                             : 'bg-blue-500 hover:bg-blue-600 text-white'
                         }`}
                       >
-                        <PlayCircle className="w-4 h-4" />
+                        <PlayCircle className="w-5 h-5" />
                         <span onClick={() => alertHandler(module)}>{module.completed ? 'Review' : 'Start Learning'}</span>
                       </button>
-                      <button className={`flex items-center space-x-2 px-4 py-2 rounded-lg border font-medium transition-colors ${
+                      <button className={`flex items-center gap-2 px-4 py-2 rounded-lg border font-medium transition-colors shadow-sm ${
                         state.darkMode
                           ? 'border-gray-600 text-gray-300 hover:bg-gray-700'
-                          : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                          : 'border-gray-300 text-gray-700 hover:bg-gray-100'
                       }`}>
-                        <FileText className="w-4 h-4" />
+                        <FileText className="w-5 h-5" />
                         <span onClick={() => alertHandler(module, "Notes")}>Notes</span>
                       </button>
                     </div>

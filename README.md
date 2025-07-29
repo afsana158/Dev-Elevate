@@ -38,6 +38,8 @@
     </tbody>
 </table>
 
+---
+
 <h2 align="center">🎯 Open Source Programmes ⭐</h2>
 
 <p align="center">
@@ -66,29 +68,14 @@ Let’s build, learn, and grow together — one commit at a time. 🔥👨‍�
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
-> ⚠️ **📢 Important Note – Must Read Before You Contribute!** ⚠️
 
-<!-- New Login Flow GIF -->
-<img src="DevElevate/login-flow/login-flow.gif" alt="Login Flow Demo" width="100%">
+##  🔁 Project Flowchart (DevElevate Platform)
+  
+<img width="3840" height="432" alt="Flowchart" src="https://github.com/user-attachments/assets/8b39e8b4-fb7c-46c4-844b-e17b9d22c725" />
 
-🔐 **Login/Sign Up page is now live** and appears first for both **👤 User** and **🛡️ Admin** roles.
-📂 **Database integration is not yet active**, but you can still **freely explore** the platform!
+##  🔁 Project ER Diagram (DevElevate Platform)
 
-➡️ **Simply sign up using any random details** as a User or Admin.
-🧠 Your data will be stored **temporarily** in your **browser's cache/global memory**, allowing you to **access your personalized dashboard**.
-
-🖥️ Once logged in, you’ll be able to:
-
-- 🔍 **Explore the full UI**
-- 🧪 **Preview dashboard pages**
-- 🛠️ **Start contributing** to build real-time features like:
-
-  - Admin Panel 🛡️
-  - Course Manager 📚
-  - Profile Settings ⚙️
-  - Content Upload System 📤
-
-<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
+<img width="3840" height="664" alt="ER Diagram" src="https://github.com/user-attachments/assets/acc7745e-06a1-4d01-a452-55ec8ceea2bc" />
 
 ## 📘 Project Documentation
 
@@ -97,8 +84,44 @@ Click the link below to explore the complete guide:
 
 [📄 View Full DevElevate Documentation (Google Docs)](https://docs.google.com/document/d/1oHgo5GmPDQu6eV9ND3VrYcpi0Dwvb-wWZi-lMgjFAH8/edit?usp=sharing)
 
+---
+
+📊 [View Contributor Performance Sheet (Google Sheets)](https://docs.google.com/spreadsheets/d/1n2JGcKr0ZJzqeHZBciVKB50kiI3bp65cj-QM7gfqdnY/edit?usp=sharing)
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
+
+> ⚠️ **📢 Important Note – Must Read Before You Contribute!** ⚠️
+
+<!-- New Login Flow GIF -->
+<img src="DevElevate/login-flow.gif" alt="Login Flow Demo" width="100%">
+
+
+### 🔐 **Login / Sign Up Now Live!**
+
+🚀 The **Login/Sign Up** flow is now fully integrated and appears first for both:
+
+* 👤 **Users**
+* 🛡️ **Admins**
+
+✅ **What Works:**
+
+* You can **navigate, explore**, and use the interface smoothly.
+* Role-based views and pages are **set up and ready**.
+
+⚠️ **What’s Pending:**
+
+* 📂 **Database Integration** (MongoDB Atlas) is **not connected** by default.
+* 🔄 To make authentication work completely (i.e., store user credentials, prevent duplicate signups, etc.), you must **connect your own MongoDB database**.
+
+🧪 **Developer Note:**
+
+> The current setup uses dummy credentials without DB persistence. You need to set your `MONGODB_URI` in the backend `.env` to activate full backend functionality.
+
+📌 Until then, login and signup forms are **just for frontend exploration**.
+
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
+
 
 ⚠️ **🚨 Attention Contributors!** 🚨
 📖 Please make sure to **thoroughly read the entire `README.md`** to understand:
@@ -128,6 +151,12 @@ Click the link below to explore the complete guide:
 To help learners and aspiring professionals master skills like DSA, Java, MERN Stack, AI/ML, and Data Science while also preparing for placements through an AI-driven, highly personalized, and community-powered platform.
 
 ---
+
+### 📌 **Click on the section below to view full project details:**
+
+<details>
+
+ <summary>🔍 Full Project Description – DevElevate</summary>
 
 ## ⚠️ **🚨 All Pages Below Are Mandatory and Must Be Fully Functional Without Bugs**
 
@@ -265,8 +294,8 @@ All user/admin credentials and email logs are safely stored using **MongoDB Atla
 Here's the current connection setup:
 
 ```
-pymongo.MongoClient(
-  "mongodb+srv://abhisekpanda2004guddul:Y3pU0wNKOW8r1ea7@cluster0.0khgj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+MONGODB_URI=mongodb+srv://<your-username>:<your-password>@cluster0.0khgj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+
 )
 ```
 
@@ -577,6 +606,8 @@ Includes:
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 
+</details>
+
 ### 🙌 **Thank You, Contributors!**
 
 > Thank you once again to all our contributors! Your efforts are truly appreciated. 💖👏
@@ -615,13 +646,27 @@ Includes:
   <img src="https://github.com/user-attachments/assets/22605f6d-f782-4ad9-a274-3373ab3f07f4" alt="Selected Project Admin badge" height="200"/>
   &nbsp;&nbsp;&nbsp;
   <img src="https://github.com/user-attachments/assets/a92d4e36-c38a-4af2-bbfa-aae37e35ccbf" alt="Abhisek Panda_DSC0019" height="200"/>
+  
+![ABHI - Copy](https://github.com/user-attachments/assets/47eac541-24f5-414b-bb6f-9b576d717cf8)
+
 </p>
 
 - 👨‍💻 **Website Creator:** [Abhisek Panda](https://abhisekpanda072.vercel.app)
-- 🌍 **Portfolio:** [🌐 abhisekpanda072.vercel.app](https://abhisekpanda072.vercel.app)
 - 🐙 **GitHub:** [github.com/abhisek2004](https://github.com/abhisek2004)
 - 💼 **LinkedIn:** [linkedin.com/in/abhisekpanda2004](https://www.linkedin.com/in/abhisekpanda2004/)
-- 🚧 **Project Repo:** [github.com/abhisek2004/Dev-Elevate](https://github.com/abhisek2004/Dev-Elevate)
+
+<img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
+
+
+### 👥 Project Admin & 👨‍🏫 Mentors – DevElevate (GSSoC'25)
+
+| Role       | Name               | GitHub Profile                                      | LinkedIn Profile                                              |
+|------------|--------------------|-----------------------------------------------------|----------------------------------------------------------------|
+| Project Admin | Abhisek Panda     | [abhisek2004](https://github.com/abhisek2004)       | [Abhisek Panda](http://www.linkedin.com/in/abhisekpanda2004)   |
+| Mentor 1   | Jay Sandeep Sawant | [Jay2006sawant](https://github.com/Jay2006sawant)   | [Jay Sandeep Sawant](https://www.linkedin.com/in/jay-sawant-4b59aa324/) |
+| Mentor 1   | Avansh Yadav       | [Avansh2006](https://github.com/Avansh2006)         | [Avansh Yadav](https://www.linkedin.com/in/avanshyadav/)       |
+| Mentor 2   | Afifa Fatima       | [afifaFatima786](https://github.com/afifaFatima786) | [Afifa Fatima](https://www.linkedin.com/in/afifa-fatima-b16a23289/) |
+| Mentor 2   | Amisha Gupta       | [amishagupta31](https://github.com/amishagupta31)   | [Amisha Gupta](https://www.linkedin.com/in/amishagupta31/)     |
 
 <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3905-4a80-b561-0d28506553ee.gif" width="100%">
 

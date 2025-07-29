@@ -61,14 +61,14 @@ const Dashboard: React.FC = () => {
   }, [state.user, state.newsItems.length, dispatch]);
 
   return (
-    <div className={`min-h-screen  ${state.darkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-200`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className={`min-h-screen transition-colors duration-300  ${state.darkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-200`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         {/* Welcome Section */}
-        <div className="mb-8">
-          <h1 className={`text-3xl font-bold ${state.darkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
+        <div className="mb-10">
+          <h1 className={`text-4xl font-extrabold tracking-tight mb-3 ${state.darkMode ? 'text-white' : 'text-gray-900'} `}>
             Welcome back, {authState.user?.name || 'Developer'}! 👋
           </h1>
-          <p className={`text-lg ${state.darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p className={`text-lg sm:text-xl font-medium leading-relaxed ${state.darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             Ready to continue your learning journey?
           </p>
         </div>
@@ -77,7 +77,7 @@ const Dashboard: React.FC = () => {
         <StatsCards />
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
             <ProgressWidget />

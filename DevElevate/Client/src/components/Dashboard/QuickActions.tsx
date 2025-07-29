@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageSquare, FileText, Target, BookOpen, Code, Brain } from 'lucide-react';
+import { MessageSquare, FileText, Target, Code } from 'lucide-react';
 import { useGlobalState } from '../../contexts/GlobalContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,8 +39,8 @@ const QuickActions: React.FC = () => {
   ];
 
   return (
-    <div className={`${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-6 border shadow-sm`}>
-      <h3 className={`text-xl font-semibold mb-6 ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+    <div className={`${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-6 border shadow-sm transition-colors duration-300`}>
+      <h3 className={`text-2xl font-semibold tracking-tight mb-6 ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
         Quick Actions
       </h3>
       
@@ -51,17 +51,17 @@ const QuickActions: React.FC = () => {
             <button
               key={index}
               onClick={action.onClick}
-              className={`p-4 rounded-lg border ${state.darkMode ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300'} transition-all hover:shadow-md group`}
+              className={`p-4 rounded-xl border w-full text-left ${state.darkMode ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300'} transition-all hover:shadow-md group`}
             >
-              <div className="flex items-center space-x-3">
-                <div className={`p-2 rounded-lg bg-gradient-to-r ${action.color} group-hover:scale-110 transition-transform`}>
+              <div className="flex items-center gap-4">
+                <div className={`p-2 rounded-lg bg-gradient-to-r ${action.color} group-hover:scale-105 transition-transform duration-200`}>
                   <Icon className="w-5 h-5 text-white" />
                 </div>
-                <div className="text-left">
-                  <h4 className={`font-medium ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+                <div className="flex flex-col">
+                  <h4 className={`text-sm font-semibold leading-tight ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
                     {action.title}
                   </h4>
-                  <p className={`text-sm ${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                  <p className={`text-xs ${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     {action.description}
                   </p>
                 </div>

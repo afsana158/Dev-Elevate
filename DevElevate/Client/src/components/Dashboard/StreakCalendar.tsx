@@ -40,23 +40,23 @@ const StreakCalendar: React.FC = () => {
   };
 
   return (
-    <div className={`${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-6 border shadow-sm`}>
+    <div className={`${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-6 border shadow-sm hover:shadow-md transition-shadow duration-200`}>
       <div className="flex items-center justify-between mb-6">
-        <h3 className={`text-xl font-semibold ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+        <h3 className={`text-xl font-semibold tracking-tight ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
           Learning Streak
         </h3>
-        <div className="flex items-center space-x-2">
-          <Flame className="w-5 h-5 text-orange-500" />
-          <span className={`font-bold ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+        <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 dark:bg-orange-900/30">
+          <Flame className="w-4 h-4 text-orange-500" />
+          <span className={`font-semibold text-sm ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
             {state.user?.streak || 0} days
           </span>
         </div>
       </div>
 
       <div className="mb-4">
-        <div className="grid grid-cols-7 gap-1 text-xs font-medium text-gray-500 mb-2">
+        <div className="grid grid-cols-7 gap-1 text-[13px] font-semibold text-gray-50 mb-2">
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-            <div key={day} className="text-center py-1">
+            <div key={day} className="text-center py-1 rounded-md  bg-sky-50 dark:bg-sky-900 text-sky-700 dark:text-sky-200">
               {day}
             </div>
           ))}
@@ -73,8 +73,8 @@ const StreakCalendar: React.FC = () => {
                   : isActiveDay(day)
                   ? 'bg-green-500 text-white'
                   : state.darkMode
-                  ? 'text-gray-400 hover:bg-gray-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'text-sky-400 hover:bg-sky-700'
+                  : 'text-sky-600 hover:bg-sky-100'
               }`}
             >
               {day}

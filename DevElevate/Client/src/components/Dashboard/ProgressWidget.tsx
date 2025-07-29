@@ -1,9 +1,10 @@
 import React from 'react';
-import { BookOpen, Code, Brain, Database } from 'lucide-react';
+import { BookOpen, Code, Brain, Database, ArrowRight } from 'lucide-react';
 import { useGlobalState } from '../../contexts/GlobalContext';
-
+import { useNavigate } from 'react-router-dom';
 const ProgressWidget: React.FC = () => {
   const { state } = useGlobalState();
+  const navigate= useNavigate()
 
   const learningTracks = [
     {
@@ -43,6 +44,9 @@ const ProgressWidget: React.FC = () => {
       completed: 6
     }
   ];
+  const handleViewAllClick = () => {
+    navigate("/learning")
+  }
 
   return (
     <div className={`${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} rounded-xl p-6 border shadow-sm`}>
@@ -50,9 +54,13 @@ const ProgressWidget: React.FC = () => {
         <h3 className={`text-xl font-semibold ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
           Learning Progress
         </h3>
-        <button className="text-blue-500 hover:text-blue-600 text-sm font-medium">
-          View All
-        </button>
+<button
+  className="flex items-center gap-1 text-sm font-medium text-blue-500 transition-colors duration-150 hover:text-blue-600"
+  onClick={handleViewAllClick}
+>
+  <span>View All</span>
+  <ArrowRight className='w-4 h-4'/>
+</button>
       </div>
 
       <div className="space-y-4">
@@ -72,7 +80,7 @@ const ProgressWidget: React.FC = () => {
                     {track.completed}/{track.modules} modules
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                <div className="w-full h-2 bg-gray-200 rounded-full dark:bg-gray-700">
                   <div
                     className={`h-2 rounded-full bg-gradient-to-r ${track.color}`}
                     style={{ width: `${track.progress}%` }}

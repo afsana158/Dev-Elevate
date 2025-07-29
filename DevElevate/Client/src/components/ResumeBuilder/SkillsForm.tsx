@@ -77,40 +77,40 @@ const SkillsForm: React.FC = () => {
 
   return (
     <div>
-      <h2 className={`text-2xl font-bold mb-6 ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+      <h2 className={`text-2xl font--semibold mb-6 tracking-wide flex items-center gap-2${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
         Skills
       </h2>
 
       <div className="space-y-8">
         {/* Technical Skills */}
-        <div className={`p-6 rounded-lg border ${state.darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <h3 className={`text-lg font-semibold mb-4 ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+        <div className={`p-6 rounded-xl border shadow-sm transition-all  ${state.darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'}`}>
+          <h3 className={`text-xl font-semibold mb-4 tracking-wide flex items-center gap-2  ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
             Technical Skills
           </h3>
           
-          <div className="flex space-x-2 mb-4">
+          <div className="flex items-center gap-2 mb-6">
             <input
               type="text"
               value={newTechnicalSkill}
               onChange={(e) => setNewTechnicalSkill(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && addTechnicalSkill()}
-              className={`flex-1 px-3 py-2 rounded-lg border ${
+              className={`flex-1 px-4 py-2 rounded-xl border shadow-sm text-sm transition-all duration-200 ${
                 state.darkMode
-                  ? 'bg-gray-700 border-gray-600 text-white'
-                  : 'bg-white border-gray-300 text-gray-900'
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:ring-blue-500 focus:border-blue-500'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500'
+              } focus:outline-none focus:ring-2`}
               placeholder="Enter a technical skill..."
             />
             <button
               onClick={addTechnicalSkill}
-              className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+              className="p-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white transition duration-200 shadow-sm"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="mb-4">
-            <p className={`text-sm mb-2 ${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div className="mb-6">
+            <p className={`text-sm mb-3 font-medium ${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               Popular technical skills:
             </p>
             <div className="flex flex-wrap gap-2">
@@ -118,9 +118,9 @@ const SkillsForm: React.FC = () => {
                 <button
                   key={index}
                   onClick={() => setNewTechnicalSkill(skill)}
-                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium shadow-sm transition-all duration-200  ${
                     state.darkMode
-                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      ? 'bg-gray-700 text-gray-200 hover:bg-gray-600 hover:text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -134,18 +134,18 @@ const SkillsForm: React.FC = () => {
             {state.resume.skills.technical.map((skill, index) => (
               <span
                 key={index}
-                className={`px-3 py-1 rounded-full text-sm flex items-center space-x-2 ${
+                className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-2 shadow-sm transition-all duration-200  ${
                   state.darkMode
-                    ? 'bg-blue-900 text-blue-300'
-                    : 'bg-blue-100 text-blue-700'
+                    ? 'bg-blue-900 text-blue-200 hover:bg-blue-800'
+                    : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
                 }`}
               >
-                <span>{skill}</span>
+                <span  className="truncate">{skill}</span>
                 <button
                   onClick={() => removeTechnicalSkill(skill)}
-                  className="text-red-500 hover:text-red-600"
+                  className="text-red-500 hover:text-red-600 transition-colors"
                 >
-                  <X className="w-3 h-3" />
+                  <X className="w-4 h-4" />
                 </button>
               </span>
             ))}
@@ -153,34 +153,34 @@ const SkillsForm: React.FC = () => {
         </div>
 
         {/* Soft Skills */}
-        <div className={`p-6 rounded-lg border ${state.darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
-          <h3 className={`text-lg font-semibold mb-4 ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
+        <div className={`p-6 rounded-lg border shadow-sm transition-all ${state.darkMode ? 'border-gray-700' : 'border-gray-200'}`}>
+          <h3 className={`text-xl font-semibold mb-4 tracking-wide flex items-center gap-2 ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
             Soft Skills
           </h3>
           
-          <div className="flex space-x-2 mb-4">
+          <div className="flex items-center gap-2 mb-6">
             <input
               type="text"
               value={newSoftSkill}
               onChange={(e) => setNewSoftSkill(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && addSoftSkill()}
-              className={`flex-1 px-3 py-2 rounded-lg border ${
+              className={`flex-1 px-4 py-2 rounded-xl border  shadow-sm text-sm transition-all duration-200 ${
                 state.darkMode
-                  ? 'bg-gray-700 border-gray-600 text-white'
-                  : 'bg-white border-gray-300 text-gray-900'
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  ? 'bg-gray-700 border-gray-600 text-white  placeholder-gray-400 focus:ring-green-500 focus:border-green-500'
+                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-green-500 focus:border-green-500'
+              } focus:outline-none focus:ring-2 `}
               placeholder="Enter a soft skill..."
             />
             <button
               onClick={addSoftSkill}
-              className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+              className="p-2 rounded-xl bg-green-500 hover:bg-green-600 text-white transition duration-200 shadow-sm"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="mb-4">
-            <p className={`text-sm mb-2 ${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div className="mb-6">
+            <p className={`text-sm mb-3 font-medium ${state.darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               Popular soft skills:
             </p>
             <div className="flex flex-wrap gap-2">
@@ -188,9 +188,9 @@ const SkillsForm: React.FC = () => {
                 <button
                   key={index}
                   onClick={() => setNewSoftSkill(skill)}
-                  className={`px-3 py-1 rounded-full text-sm transition-colors ${
+                  className={`px-3 py-1.5 rounded-full text-sm transition-all duration-200 ${
                     state.darkMode
-                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -204,18 +204,18 @@ const SkillsForm: React.FC = () => {
             {state.resume.skills.soft.map((skill, index) => (
               <span
                 key={index}
-                className={`px-3 py-1 rounded-full text-sm flex items-center space-x-2 ${
+                className={`px-3 py-1.5 rounded-full text-sm flex items-center gap-2 shadow-sm transition-all duration-200 ${
                   state.darkMode
-                    ? 'bg-green-900 text-green-300'
-                    : 'bg-green-100 text-green-700'
+                    ? 'bg-green-900 text-green-200 hover:bg-green-800'
+                    : 'bg-green-100 text-green-700  hover:bg-green-200'
                 }`}
               >
-                <span>{skill}</span>
+                 <span className="truncate">{skill}</span>
                 <button
                   onClick={() => removeSoftSkill(skill)}
-                  className="text-red-500 hover:text-red-600"
+                  className="text-red-500 hover:text-red-600 transition-colors"
                 >
-                  <X className="w-3 h-3" />
+                  <X className="w-4 h-4" />
                 </button>
               </span>
             ))}

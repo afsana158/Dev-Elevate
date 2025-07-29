@@ -105,28 +105,28 @@ const TechFeed: React.FC = () => {
 
   return (
     <div className={`min-h-screen ${state.darkMode ? 'bg-gray-900' : 'bg-gray-50'} transition-colors duration-200`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className={`text-3xl font-bold ${state.darkMode ? 'text-white' : 'text-gray-900'} mb-2`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="mb-10">
+          <h1 className={`text-4xl font-bold  tracking-tight leading-tight mb-3 transition-colors duration-200 ${state.darkMode ? 'text-white' : 'text-gray-900'}`}>
             Tech Feed & Career Updates
           </h1>
-          <p className={`text-lg ${state.darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+          <p className={`text-lg font-medium transition-colors duration-200 ${state.darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             Stay updated with the latest in tech news, jobs, and opportunities
           </p>
         </div>
 
         {/* Search and Filter */}
-        <div className="mb-8 flex flex-col sm:flex-row gap-4">
+        <div className="mb-8 flex flex-col sm:flex-row gap-4 items-stretch">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
             <input
               type="text"
               placeholder="Search news and updates..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className={`w-full pl-10 pr-4 py-2 rounded-lg border ${
+              className={`w-full pl-10 pr-4 py-2 rounded-lg shadow-sm border transition-colors duration-200 ${
                 state.darkMode
-                  ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400'
+                  ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500'
                   : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
               } focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
@@ -136,7 +136,7 @@ const TechFeed: React.FC = () => {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value as any)}
-              className={`px-4 py-2 rounded-lg border ${
+              className={`px-4 py-2 rounded-lg shadow-sm border transition-colors duration-200 ${
                 state.darkMode
                   ? 'bg-gray-800 border-gray-700 text-white'
                   : 'bg-white border-gray-300 text-gray-900'
