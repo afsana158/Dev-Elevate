@@ -1,10 +1,12 @@
-import { News } from "../model/News";
-import asyncHandler from "../middleware/asyncHandler";
+import { News } from "../model/NewsModel.js";
+import {asyncHandler} from "../utils/asyncHandler.js"
 
 const createNews = asyncHandler(async (req, res) => {
-  const { title, content, author, published, tags } = req.body;
+  const { title, content, published = false, tags=[] } = req.body;
 
-  if (!title || !content || !author) {
+  const author = req.user.id || req.user._id;
+
+  if (!title || !content ) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -40,7 +42,7 @@ const createNews = asyncHandler(async (req, res) => {
     title,
     content,
     author,
-    isPublished: published || false,
+    isPublished: published,
     tags: processedTags,
   });
 
@@ -111,7 +113,7 @@ const getNewsById = asyncHandler(async (req, res) => {
   res.status(200).json(news, { message: "News fetched successfully" });
 });
 
-export default {
+export {
   createNews,
   updateNews,
   deleteNews,

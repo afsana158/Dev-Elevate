@@ -9,7 +9,6 @@ const newsSchema = new Schema(
     },
     slug: {
       type: String,
-      required: true,
     },
     content: {
       type: String,
@@ -27,30 +26,34 @@ const newsSchema = new Schema(
     ],
     coverImage: {
       type: String,
-      required: true,
+      // required: true,
     },
     isPublished: {
       type: Boolean,
       default: false,
     },
     comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+    commentCount: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );
 
 
 
-const slugify = newsSchema.pre("save", async function (next) {
+const slugifyTitle = newsSchema.pre("save", async function (next) {
   if (!this.isModified("title")) return next();
 
   let baseSlug = slugify(this.title, { lower: true, strict: true });
   let slug = baseSlug;
   let counter = 1;
 
-  // Check for existing slugs for the same owner
+  // Check for existing slugs for the same author
   // if same slugs exist, append a counter which increase for every duplicate title and slug.
   while (
-    await mongoose.models.Blog.findOne({ slug, owner: this.owner, _id: { $ne: this._id } })
+    await mongoose.models.News.findOne({ slug, author: this.author, _id: { $ne: this._id } })
   ) {
     slug = `${baseSlug}-${counter++}`;
   }

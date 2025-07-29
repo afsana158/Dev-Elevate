@@ -1,10 +1,14 @@
 import jwt from "jsonwebtoken";
 
+
+
 export const authenticateToken = (req, res, next) => {
-  const token = req.cookies.token;
+  if(!process.env.JWT_SECRET) return res.status(400).json({message: "jwt_secret is not defined in .env"})
+    
+  const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
 
   if (!token) {
-    return res.status(401).json({ message: "User not logged in" });
+    return res.status(401).json({ message: "Unauthorized request" });
   }
 
   try {
