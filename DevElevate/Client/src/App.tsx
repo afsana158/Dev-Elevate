@@ -1,9 +1,14 @@
 import { AuthProvider } from "./contexts/AuthContext";
 import { GlobalProvider } from "./contexts/GlobalContext";
 import { NotificationProvider } from "./contexts/NotificationContext";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/Layout/Navbar";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Footer from "./components/Layout/Footer";
+import ScrollToTop from "./components/Layout/ScrollToTop";
 import LearningHub from "./components/LearningHub/LearningHub";
 import Chatbot from "./components/Chatbot/Chatbot";
 import TechFeed from "./components/TechFeed/TechFeed";
@@ -22,15 +27,17 @@ import Dashboard from "./components/Dashboard/Dashboard";
 import Settings from "./components/Settings/Settings";
 import PremiumPage from "./components/premium/PremiumPage";
 import PaymentPage from "./components/Payment/PaymentPage";
-import AddPost from "./components/NewsPost/AddPost";
-import UpdatePost from "./components/NewsPost/UpdatePost";
+import ProjectRecommender from "./components/ProjectRecommender/ProjectRecommender";
+import Layout from "./components/Layout/Layout";
 import Post from "./components/NewsPost/Post";
+import AddPost from "./components/NewsPost/AddPost";
 function App() {
   return (
     <AuthProvider>
       <GlobalProvider>
         <NotificationProvider>
           <Router>
+            <ScrollToTop />
             <Routes>
               {/* Public Routes */}
               <Route
@@ -47,40 +54,48 @@ function App() {
                 path="/*"
                 element={
                   <ProtectedRoute>
-                    <Navbar />
-                    <div className="flex-1 bg-white dark:bg-gray-900">
-                      <main className="flex-1">
-                        <Routes>
-                          <Route path="/" element={<Dashboard />} />
-                          <Route path="/learning" element={<LearningHub />} />
-                          <Route path="/chatbot" element={<Chatbot />} />
-                          <Route path="/news" element={<TechFeed />} />
-                          <Route path="/resume" element={<ResumeBuilder />} />
-                          <Route
-                            path="/placement"
-                            element={<PlacementPrep />}
-                          />
-                          <Route path="/settings" element={<Settings />} />
-                          <Route path="/premium" element={<PremiumPage />} />
-                          <Route path="/payment" element={<PaymentPage />} />
-                          <Route path="/profile" element={<UserProfile />} />
-                          <Route path="/privacy" element={<PrivacyPolicy />} />
-                          <Route path="/terms" element={<TermsOfService />} />
-                          <Route path="/creator" element={<CreatorPage />} />
-                          <Route path="/disclaimer" element={<Disclaimer />} />
-                          <Route path="/add-post" element={<AddPost />} />
-                          <Route
-                            path="/update-post/:postId"
-                            element={<UpdatePost />}
-                          />
-                          <Route
-                            path="/news/:blogId"
-                            element={<Post />}
-                          />
-                        </Routes>
-                      </main>
-                      <Footer />
-                    </div>
+                    <Layout>
+                      <div className="flex-1 bg-white dark:bg-gray-900">
+                        <main className="flex-1">
+                          <Routes>
+                            <Route path="/" element={<Dashboard />} />
+                            <Route
+                              path="*"
+                              element={<Navigate to="/" replace />}
+                            />
+                            <Route path="/learning" element={<LearningHub />} />
+                            <Route path="/chatbot" element={<Chatbot />} />
+                            <Route path="/news" element={<TechFeed />} />
+                            <Route path="/resume" element={<ResumeBuilder />} />
+                            <Route
+                              path="/placement"
+                              element={<PlacementPrep />}
+                            />
+                            <Route
+                              path="/projects"
+                              element={<ProjectRecommender />}
+                            />
+                            <Route path="/settings" element={<Settings />} />
+                            <Route path="/premium" element={<PremiumPage />} />
+                            <Route path="/payment" element={<PaymentPage />} />
+                            <Route path="/profile" element={<UserProfile />} />
+                            <Route
+                              path="/privacy"
+                              element={<PrivacyPolicy />}
+                            />
+                            <Route path="/terms" element={<TermsOfService />} />
+                            <Route path="/creator" element={<CreatorPage />} />
+                            <Route
+                              path="/disclaimer"
+                              element={<Disclaimer />}
+                            />
+                            <Route path="/news/:newsId" element={<Post/>} />
+                            <Route path="news/add-post" element={<AddPost/>}/>
+                          </Routes>
+                        </main>
+                        <Footer />
+                      </div>
+                    </Layout>
                   </ProtectedRoute>
                 }
               />

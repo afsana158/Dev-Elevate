@@ -98,7 +98,11 @@ const getAllNews = asyncHandler(async (req, res) => {
   if (!news || news.length === 0) {
     return res.status(404).json({ message: "No news found" });
   }
-  res.status(200).json(news);
+  return res.status(200).json({
+    success: true,
+    news,
+    message: "News fetched successfully",
+  });
 });
 
 const getNewsById = asyncHandler(async (req, res) => {

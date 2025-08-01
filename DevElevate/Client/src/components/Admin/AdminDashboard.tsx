@@ -1637,8 +1637,6 @@ const [feedback, setFeedback] = useState<any[]>([]);
         return renderAnalytics();
       case 'settings':
         return renderSystemSettings();
-      case 'overview':
-        return renderOverview();
       default:
         return renderFeedback();
     }
