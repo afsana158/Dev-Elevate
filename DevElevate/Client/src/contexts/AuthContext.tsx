@@ -1,4 +1,6 @@
-import baseUrl from "../config/routes";
+
+import { baseUrl } from "../config/routes";
+
 import React, {
   createContext,
   useContext,
@@ -217,7 +219,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       // Make API call to backend login endpoint
       console.log(baseUrl);
       
-      const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
+      const response = await fetch(`${baseUrl}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -299,7 +301,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
     try {
       // Make API call to backend register endpoint
-      const response = await fetch(`${baseUrl}/api/v1/auth/signup`, {
+      const response = await fetch(`${baseUrl}/auth/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
