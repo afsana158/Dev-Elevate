@@ -203,11 +203,11 @@ const NewsWidget: React.FC = () => {
           ))}
         </div>
       )}
-      <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg text-sm text-blue-800 dark:text-blue-200 flex justify-between items-center">
+      <div className="mt-6 p-4 bg-indigo-700 dark:bg-blue-900 rounded-lg text-white text-md dark:text-blue-200 flex justify-between items-center">
         <span>Want to add your own posts?</span>
         <button
           onClick={() => navigate("/news/add-post")}
-          className="ml-2 text-white hover:text-blue-300 font-medium underline"
+          className="ml-2 dark:text-white text-white hover:text-blue-100  font-medium underline"
         >
           Get started here →
         </button>

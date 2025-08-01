@@ -50,6 +50,7 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
   const { state } = useAuth();
   const user = state.user;
   const token = state.sessionToken;
+  console.log("token: ", token)
 
   const { register, handleSubmit, watch, setValue, control } =
     useForm<FormInputs>({
@@ -130,13 +131,13 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
   return (
     <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
       <div className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-2xl shadow-md p-6 sm:p-8 space-y-8 transition-colors duration-300">
-        <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+        <h1 className="text-4xl font-bold text-blue-600 dark:text-white flex items-center gap-2">
           📝 {post ? "Update Blog Post" : "Create Blog Post"}
         </h1>
 
         {/* Post Details */}
         <div>
-          <h2 className="text-2xl font-bold text-indigo-500 dark:text-indigo-300 mb-4">
+          <h2 className="text-2xl font-bold text-indigo-500 dark:text-white mb-4">
             Post Details
           </h2>
           <Input
@@ -148,7 +149,7 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
           <Input
             label="Slug"
             placeholder="Auto-generated or custom slug"
-            className="mb-4 mt-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            className="mb-4 mt-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             {...register("slug", { required: true })}
             onInput={(e) =>
               setValue("slug", slugTransform(e.currentTarget.value), {
@@ -158,23 +159,21 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
           />
         </div>
 
-        {/* Content */}
         <div>
-          <h2 className="text-xl font-semibold text-indigo-500 dark:text-indigo-300 mb-2">
+          <h2 className="text-2xl font-semibold text-indigo-500 dark:text-white mb-2">
             🖋️ Content
           </h2>
           <RTE name="content" control={control} />
         </div>
 
-        {/* Publishing Info */}
         <div>
-          <h2 className="text-xl font-semibold text-indigo-500 dark:text-indigo-200 mb-2">
+          <h2 className="text-xl font-semibold text-black dark:text-white  mb-2">
             📦 Publishing Info
           </h2>
           <Input
             label="Tags (comma separated)"
             placeholder="eg. AI, WebDev, Cloud"
-            className="mb-4 mt-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+            className="mb-4 mt-2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
             {...register("tags", {
               validate: (value) => {
                 if (typeof value === "string") {
@@ -188,7 +187,7 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
             <Select
               label="Status"
               options={["active", "inactive"]}
-              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               {...register("status", { required: true })}
             />
           </div>

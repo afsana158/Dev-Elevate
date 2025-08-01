@@ -8,11 +8,10 @@ const createComment = asyncHandler(async(req, res)=>{
     const {content} = req.body;
 
     if(!newsId){
-        return res.json({ error: 'News ID is required' }, {status: 400});
-    }
+return res.status(404).json({message: 'News ID is required'})    }
 
-    if(!content || !content.trim() === ""){
-        return res.json({ error: 'Comment content is required' }, {status: 400});
+    if(!content || content.trim() === ""){
+        return res.status(400).json({error: "content is necessary"})
     }
 
     const comment = await Comment.create({
@@ -22,7 +21,8 @@ const createComment = asyncHandler(async(req, res)=>{
     })
 
     if(!comment){
-        return res.json({ error: 'Failed to create comment' }, {status: 500});
+        return res.status(500).json({ error: 'Failed to create comment' });
+
     }
 
     await News.findByIdAndUpdate(newsId, {
@@ -106,14 +106,14 @@ const getCommentsByNews = asyncHandler(async(req, res)=>{
     const {newsId} = req.params;
 
     if(!newsId){
-        return res.json({ error: 'News ID is required' }, {status: 400});
+        return res.status(400).json({error: "News id is required"})
     }
 
     const comments = await Comment.find({ news: newsId })
-        .populate('user', 'username email')
+        .populate('user', 'username email avatar')
         .sort({ createdAt: -1 });
     if(!comments || comments.length === 0){
-        return res.json({ message: 'No comments found for this news' }, {status: 404});
+return res.status(404).json({message: "No comments found for this post:"})
     }
 
     return res.status(200).json({

@@ -8,9 +8,11 @@ interface CommentItemProps {
   comment: {
     _id: string;
     content: string;
-    owner?: {
-      username?: string;
-      avatar?: string;
+    news: string,
+    user?: {
+      _id?: string;
+      email?: string;
+      username?:string;
     };
   };
 
@@ -23,18 +25,20 @@ const CommentItem: React.FC<CommentItemProps> = ({
   comment,
   blogId,
   fetchComments,
-  depth = 0,
 }) => {
+  const depth = 0;
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(comment.content);
   const [menuOpen, setMenuOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  console.log("news id: ", blogId)
+
   const handleUpdate = async () => {
     if (!editText.trim()) return toast.error("Comment cannot be empty!");
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/comments/update-comment/${
+        `${import.meta.env.VITE_API_URL}/comments/update-comment/${
           comment._id
         }`,
         { updatedContent: editText },
@@ -53,7 +57,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
   const handleDelete = async () => {
     try {
       await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/comments/delete-comment/${
+        `${import.meta.env.VITE_API_URL}/comments/delete-comment/${
           comment._id
         }`,
         {},
@@ -106,13 +110,8 @@ const CommentItem: React.FC<CommentItemProps> = ({
 
       {/* Avatar & Username */}
       <div className="flex items-center gap-3 mb-2">
-        <img
-          src={comment.owner?.avatar || "https://via.placeholder.com/40"}
-          alt="Avatar"
-          className="w-10 h-10 rounded-full"
-        />
         <span className="font-bold text-teal-800">
-          {comment.owner?.username || "Anonymous"}
+          {comment.user?.email || "Anonymous"}
         </span>
       </div>
 
@@ -142,7 +141,7 @@ const CommentItem: React.FC<CommentItemProps> = ({
           </div>
         </>
       ) : (
-        <p className="text-gray-800 mb-2 whitespace-pre-wrap">
+        <p className="text-gray-800 dark:text-white mb-2 whitespace-pre-wrap">
           {comment.content}
         </p>
       )}

@@ -1,114 +1,132 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from "sonner";
 import CommentItem from "./CommentItem";
+import { useAuth } from "../../contexts/AuthContext";
 
-interface CommentResponse{
-    _id: string;
-    content: string;
-    createdAt: string;
-    user: {
-        _id: string;
-        name: string;
-        avatar?: string;
-    };
-    // replies?: CommentResponse[];
+interface CommentType {
+  _id: string;
+  content: string;
+  news: string; // 🔁 was newsId
+  user?: {
+    _id?: string;
+    email?: string;
+    username?: string;
+  };
+  isEdited: boolean;
 }
 
-interface BlogId {
-  blogId: string;
-}   
 
-const Comment: React.FC<BlogId> = ({ blogId }) => {
-  const [commentText, setCommentText] = useState("");
-  const [comments, setComments] = useState<CommentResponse[]>([]);
-  const [loading, setLoading] = useState(false);
+interface GetCommentsResponse {
+  message: string;
+  comments: CommentType[];
+}
+
+interface AddCommentResponse {
+  message: string;
+  comment: CommentType;
+}
+
+interface Props {
+  blogId: string;
+}
+
+const Comments: React.FC<Props> = ({ blogId }) => {
+  const [comments, setComments] = useState<CommentType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [newComment, setNewComment] = useState("");
+  const { state } = useAuth();
+  const user = state.user;
+
+  if (!user) {
+    return <div>User not logged in or smthn</div>;
+  }
 
   const fetchComments = async () => {
     try {
-      setLoading(true);
-      const res = await axios.get<CommentResponse[]>(
-        `${import.meta.env.VITE_BACKEND_URL}/comments/get-comments-on-blog/${
-          blogId
-        }`
+      const res = await axios.get<GetCommentsResponse>(
+        `http://localhost:4000/api/comments/get-comments-on-news/${blogId}`
       );
-      console.log("comments:", res.data);
-      const fetchedComments = res.data || [];
-      setComments(fetchedComments);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-      toast.error("Failed to fetch comments");
+      setComments(res.data.comments || []);
+    } catch (err: any) {
+      setError(err.response?.data?.message || "Failed to fetch comments");
+      console.error("Error fetching comments:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchComments();
-  }, [blogId]);
+  const handleAddComment = async () => {
+    if (!newComment.trim()) return;
 
-  const handleSubmit = async () => {
-    if (!commentText.trim()) return toast.error("Comment cannot be empty!");
     try {
-      await axios.post(
-        `${import.meta.env.VITE_BACKEND_URL}/comments/create-comment/${
-          blogId
-        }`,
-        { content: commentText },
-        { withCredentials: true }
+      const res = await axios.post<AddCommentResponse>(
+        `http://localhost:4000/api/comments/create-comment/${blogId}`,
+        {
+          content: newComment,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${state.sessionToken}`,
+          },
+        }
       );
-      toast.success("Comment added successfully!");
-      setCommentText("");
-      fetchComments();
-    } catch (error:any) {
-      console.error("Error creating comment:", error);
-      toast.error(error.response?.data?.message || "Failed to add comment.");
+
+      const addedComment = res.data.comment;
+      setComments((prev) => [addedComment, ...prev]);
+      setNewComment("");
+    } catch (err) {
+      console.error("Failed to add comment", err);
     }
   };
 
-  return (
-    <div className="mt-16 max-w-3xl mx-auto">
-      <h2 className="text-3xl font-extrabold text-teal-800 mb-8 text-center">
-        💬 Comments ({comments.length})
-      </h2>
+  useEffect(() => {
+    if (blogId) fetchComments();
+  }, [blogId]);
 
-      <div className="mb-10">
+  return (
+    <div className="w-full max-w-3xl mx-auto bg-white dark:bg-gray-900 rounded-xl shadow-md p-6 space-y-6 border dark:border-neutral-800">
+      <h2 className="text-xl font-semibold">Comments</h2>
+
+      {/* Comment input box */}
+      <div className="space-y-2">
         <textarea
-          className="w-full p-4 border border-teal-300 rounded-lg text-gray-700 focus:ring-2 focus:ring-teal-500 focus:outline-none"
-          placeholder="Write your comment here..."
-          value={commentText}
-          onChange={(e) => setCommentText(e.target.value)}
-        ></textarea>
+          placeholder="Write a comment..."
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          className="w-full rounded-lg border border-gray-300 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-900 text-sm text-gray-800 dark:text-white p-3 focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+          rows={3}
+        />
         <button
-          onClick={handleSubmit}
-          className="mt-3 px-6 py-3 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 transition duration-300"
+          onClick={handleAddComment}
+          className="bg-gray-800 dark:bg-white text-white dark:text-black px-4 py-2 rounded-md font-medium hover:opacity-90 transition"
         >
-          ➕ Post Comment
+          Post Comment
         </button>
       </div>
 
-      {/* Comments List */}
-      {loading ? (
-        <p className="text-center text-gray-600">Loading comments...</p>
-      ) : comments.length === 0 ? (
-        <p className="text-center text-gray-600 text-lg">
-          No comments yet. Be the first to comment!
-        </p>
-      ) : (
-        <div className="space-y-6">
-          {comments.map((comment) => (
-            <div key={comment._id}>
-              <CommentItem
-                comment={comment}
-                blogId={blogId}
-                fetchComments={fetchComments}
-              />
-            </div>
-          ))}
-        </div>
-      )}
+      {/* Comments list */}
+      <div className="divide-y divide-gray-200 dark:divide-neutral-800">
+        {loading ? (
+          <p className="text-sm text-gray-500">Loading comments...</p>
+        ) : error ? (
+          <p className="text-sm text-red-500">{error}</p>
+        ) : comments.length === 0 ? (
+          <p className="text-sm text-gray-500">No comments yet.</p>
+        ) : (
+          comments.map((comment) => (
+            <CommentItem
+              key={comment._id}
+              comment={comment}
+              blogId={blogId}
+              fetchComments={fetchComments}
+            />
+          ))
+        )}
+      </div>
     </div>
   );
 };
 
-export default Comment;
+export default Comments;

@@ -94,16 +94,23 @@ const deleteNews = asyncHandler(async (req, res) => {
 const getAllNews = asyncHandler(async (req, res) => {
   const news = await News.find()
     .populate("author", "name email")
+    .populate({
+      path: "comments",
+      populate: { path: "user", select: "email" },
+    })
     .sort({ createdAt: -1 });
+
   if (!news || news.length === 0) {
     return res.status(404).json({ message: "No news found" });
   }
+
   return res.status(200).json({
     success: true,
     news,
     message: "News fetched successfully",
   });
 });
+
 
 const getNewsById = asyncHandler(async (req, res) => {
   const newsId = req.params.newsId;

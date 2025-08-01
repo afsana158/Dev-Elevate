@@ -103,6 +103,7 @@ const Post: React.FC = () => {
   const { title, content, createdAt, author, tags = [] } = blog;
   const isAuthor = user.id === author._id ? true : false;
   console.log("is author", isAuthor);
+  console.log("blog: ", blog)
 
   const handleDeletePost = async () => {
     try {
@@ -199,6 +200,9 @@ const Post: React.FC = () => {
           onConfirm={handleDeletePost}
           message="Are you sure you want to delete this post?"
         />
+
+        {/* Comments Section */}
+        <Comment blogId={blog._id}/>
       </article>
     </main>
   );

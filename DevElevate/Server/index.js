@@ -12,8 +12,6 @@ import adminFeedbackRoutes from './routes/adminFeedbackRoutes.js';
 import newsRoutes from './routes/newsRoutes.js';
 import commentRoutes from './routes/commentRoutes.js'
 connectDB();
-
-
 // Connect to MongoDB only if MONGO_URI is available
 if (process.env.MONGO_URI) {
   connectDB();
