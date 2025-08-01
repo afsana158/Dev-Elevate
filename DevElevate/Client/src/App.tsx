@@ -1,27 +1,30 @@
-import { AuthProvider } from './contexts/AuthContext';
-import { GlobalProvider } from './contexts/GlobalContext';
-import { NotificationProvider } from './contexts/NotificationContext';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Layout/Navbar';
-import Footer from './components/Layout/Footer';
-import LearningHub from './components/LearningHub/LearningHub';
-import Chatbot from './components/Chatbot/Chatbot';
-import TechFeed from './components/TechFeed/TechFeed';
-import ResumeBuilder from './components/ResumeBuilder/ResumeBuilder';
-import PlacementPrep from './components/PlacementPrep/PlacementPrep';
-import UserProfile from './components/Profile/UserProfile';
-import PrivacyPolicy from './components/Legal/PrivacyPolicy';
-import TermsOfService from './components/Legal/TermsOfService';
-import CreatorPage from './components/Legal/CreatorPage';
-import Disclaimer from './components/Legal/Disclaimer';
-import AdminDashboard from './components/Admin/AdminDashboard';
-import AdminSystemLogs from './components/Admin/AdminSystemLogs';
-import ProtectedRoute from './components/Auth/ProtectedRoute';
-import LoginRegister from './components/Auth/LoginRegister';
-import Dashboard from './components/Dashboard/Dashboard';
-import Settings from './components/Settings/Settings';
-import PremiumPage from './components/premium/PremiumPage';
-import PaymentPage from './components/Payment/PaymentPage';
+import { AuthProvider } from "./contexts/AuthContext";
+import { GlobalProvider } from "./contexts/GlobalContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Layout/Navbar";
+import Footer from "./components/Layout/Footer";
+import LearningHub from "./components/LearningHub/LearningHub";
+import Chatbot from "./components/Chatbot/Chatbot";
+import TechFeed from "./components/TechFeed/TechFeed";
+import ResumeBuilder from "./components/ResumeBuilder/ResumeBuilder";
+import PlacementPrep from "./components/PlacementPrep/PlacementPrep";
+import UserProfile from "./components/Profile/UserProfile";
+import PrivacyPolicy from "./components/Legal/PrivacyPolicy";
+import TermsOfService from "./components/Legal/TermsOfService";
+import CreatorPage from "./components/Legal/CreatorPage";
+import Disclaimer from "./components/Legal/Disclaimer";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import AdminSystemLogs from "./components/Admin/AdminSystemLogs";
+import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import LoginRegister from "./components/Auth/LoginRegister";
+import Dashboard from "./components/Dashboard/Dashboard";
+import Settings from "./components/Settings/Settings";
+import PremiumPage from "./components/premium/PremiumPage";
+import PaymentPage from "./components/Payment/PaymentPage";
+import AddPost from "./components/NewsPost/AddPost";
+import UpdatePost from "./components/NewsPost/UpdatePost";
+import Post from "./components/NewsPost/Post";
 function App() {
   return (
     <AuthProvider>
@@ -53,7 +56,10 @@ function App() {
                           <Route path="/chatbot" element={<Chatbot />} />
                           <Route path="/news" element={<TechFeed />} />
                           <Route path="/resume" element={<ResumeBuilder />} />
-                          <Route path="/placement" element={<PlacementPrep />} />
+                          <Route
+                            path="/placement"
+                            element={<PlacementPrep />}
+                          />
                           <Route path="/settings" element={<Settings />} />
                           <Route path="/premium" element={<PremiumPage />} />
                           <Route path="/payment" element={<PaymentPage />} />
@@ -62,6 +68,15 @@ function App() {
                           <Route path="/terms" element={<TermsOfService />} />
                           <Route path="/creator" element={<CreatorPage />} />
                           <Route path="/disclaimer" element={<Disclaimer />} />
+                          <Route path="/add-post" element={<AddPost />} />
+                          <Route
+                            path="/update-post/:postId"
+                            element={<UpdatePost />}
+                          />
+                          <Route
+                            path="/news/:blogId"
+                            element={<Post />}
+                          />
                         </Routes>
                       </main>
                       <Footer />

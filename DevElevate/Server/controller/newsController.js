@@ -1,12 +1,12 @@
 import { News } from "../model/NewsModel.js";
-import {asyncHandler} from "../utils/asyncHandler.js"
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const createNews = asyncHandler(async (req, res) => {
-  const { title, content, published = false, tags=[] } = req.body;
+  const { title, content, published = false, tags = [] } = req.body;
 
   const author = req.user.id || req.user._id;
 
-  if (!title || !content ) {
+  if (!title || !content) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -47,7 +47,11 @@ const createNews = asyncHandler(async (req, res) => {
   });
 
   await news.save();
-  res.status(201).json(news);
+  return res.status(201).json({
+    success: true,
+    message: "News created successfully",
+    news,
+  });
 });
 
 const updateNews = asyncHandler(async (req, res) => {
@@ -98,11 +102,11 @@ const getAllNews = asyncHandler(async (req, res) => {
 });
 
 const getNewsById = asyncHandler(async (req, res) => {
-  const newsId = req.params.id;
+  const newsId = req.params.newsId;
   if (!newsId) {
     return res.status(400).json({ message: "News Id not found!" });
   }
-  const news = await News.findById(req.params.id).populate(
+  const news = await News.findById(newsId).populate(
     "author",
     "name email"
   );
@@ -110,13 +114,11 @@ const getNewsById = asyncHandler(async (req, res) => {
   if (!news) {
     return res.status(404).json({ message: "News not found" });
   }
-  res.status(200).json(news, { message: "News fetched successfully" });
+  res.status(200).json({
+    success: true,
+    news,
+    message: "News fetched successfully",
+  });
 });
 
-export {
-  createNews,
-  updateNews,
-  deleteNews,
-  getAllNews,
-  getNewsById,
-};
+export { createNews, updateNews, deleteNews, getAllNews, getNewsById };

@@ -43,6 +43,14 @@ const Navbar: React.FC = () => {
     { path: "/payment", icon: CreditCard, label: "Pricing" },
   ];
 
+  useEffect(() => {
+  if (state.darkMode) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}, [state.darkMode]);
+
   const isActive = (path: string) => location.pathname === path;
 
   // Mock notification count

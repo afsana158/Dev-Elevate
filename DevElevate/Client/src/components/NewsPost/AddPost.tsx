@@ -5,7 +5,7 @@ import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "sonner";
-import Input from './Input.tsx'
+import Input from "./Input.tsx";
 import Select from "./Select.tsx";
 import RTE from "./RTE.tsx";
 
@@ -25,7 +25,7 @@ interface FormInputs {
   tags: string[] | string;
 }
 
-interface PostResponse{
+interface PostResponse {
   success: boolean;
   message: string;
   news: {
@@ -35,9 +35,9 @@ interface PostResponse{
     content: string;
     published: boolean;
     tags: string[];
-    createdAt: string,
-    updatedAt: string
-  }
+    createdAt: string;
+    updatedAt: string;
+  };
 }
 
 interface AddPostProps {
@@ -51,48 +51,40 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
   const user = state.user;
   const token = state.sessionToken;
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    control,
-    getValues,
-    formState: { errors },
-  } = useForm<FormInputs>({
-    defaultValues: {
-      title: post?.title || "Title",
-      slug: post?.slug || "slug",
-      content: post?.content || "",
-      status: post?.published ? "active" : "inactive",
-      tags: post?.tags || [],
-    },
-  });
+  const { register, handleSubmit, watch, setValue, control } =
+    useForm<FormInputs>({
+      defaultValues: {
+        title: post?.title || "",
+        slug: post?.slug || "",
+        content: post?.content || "",
+        status: post?.published ? "active" : "inactive",
+        tags: post?.tags || [],
+      },
+    });
 
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<FormInputs> = async (data) => {
     try {
       setIsSubmitting(true);
-      console.log("data", data);
-
       if (!user || !token) {
         alert("You must be logged in to add a post.");
         return;
       }
 
-      const processedTags = typeof data.tags === "string"
-        ? data.tags.split(",").map((tag: string) => tag.trim()) 
-        : data.tags;
+      const processedTags =
+        typeof data.tags === "string"
+          ? data.tags.split(",").map((tag) => tag.trim())
+          : data.tags;
 
       const response = await axios.post<PostResponse>(
-        `${import.meta.env.VITE_API_URL}/posts`,
+        `${import.meta.env.VITE_API_URL}/api/news/create-news-post`,
         {
           title: data.title,
           slug: data.slug,
           content: data.content,
           published: data.status === "active",
-          tags: data.tags,
+          tags: processedTags,
         },
         {
           headers: {
@@ -101,11 +93,12 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
           },
         }
       );
-      console.log("Post created successfully:", response.data);
+      console.log(response.data);
       toast.success("Post created successfully!");
       navigate(`/news/${response.data.news._id}`);
     } catch (error) {
       console.error("Error creating post:", error);
+      toast.error("Failed to create post");
     } finally {
       setIsSubmitting(false);
     }
@@ -135,81 +128,94 @@ const AddPost: React.FC<AddPostProps> = ({ post }) => {
   }, [watch, setValue, slugTransform]);
 
   return (
-    <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-10">
-      <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
-        <h1 className="text-2xl font-bold text-slate-800 mb-8">
-          {post ? "Update Blog Post" : "Create Blog Post"}
+    <div className="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8 dark:bg-gray-900 bg-white text-gray-900 dark:text-white transition-colors duration-300">
+      <div className="bg-white dark:bg-gray-800  text-black dark:text-white rounded-2xl shadow-md p-6 sm:p-8 space-y-8 transition-colors duration-300">
+        <h1 className="text-4xl font-bold text-blue-600 dark:text-blue-400 flex items-center gap-2">
+          📝 {post ? "Update Blog Post" : "Create Blog Post"}
         </h1>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col lg:flex-row gap-6"
-        >
-          {/* Left column - main content */}
-          <div className="flex-1">
-            <Input
-              label="Title"
-              placeholder="Enter post title"
-              className="mb-4"
-              {...register("title", { required: true })}
-            />
-            <Input
-              label="Slug"
-              placeholder="Auto-generated or custom slug"
-              className="mb-4"
-              {...register("slug", { required: true })}
-              onInput={(e) =>
-                setValue("slug", slugTransform(e.currentTarget.value), {
-                  shouldValidate: true,
-                })
-              }
-            />
-            {control && (
-              <RTE
-                label="Content"
-                name="content"
-                control={control}
-                // defaultValue={getValues("content")}
-              />
-            )}
-          </div>
 
-          <div className="w-full lg:w-[320px] space-y-4">
-            <Input
-              label="Tags (comma separated)"
-              placeholder="Enter tags"
-              className="mb-4"
-              {...register("tags", {
-                required: false,
-                validate: (value) => {
-                  if (value && typeof value === "string") {
-                    return value.split(",").length <= 5 || "Max 5 tags allowed";
-                  }
-                  return true;
-                },
-              })} />
+        {/* Post Details */}
+        <div>
+          <h2 className="text-2xl font-bold text-indigo-500 dark:text-indigo-300 mb-4">
+            Post Details
+          </h2>
+          <Input
+            label="Title"
+            placeholder="Enter post title"
+            className="mb-4 mt-2 text-black dark:text-white dark:bg-gray-800"
+            {...register("title", { required: true })}
+          />
+          <Input
+            label="Slug"
+            placeholder="Auto-generated or custom slug"
+            className="mb-4 mt-2 text-black dark:text-white dark:bg-gray-800"
+            {...register("slug", { required: true })}
+            onInput={(e) =>
+              setValue("slug", slugTransform(e.currentTarget.value), {
+                shouldValidate: true,
+              })
+            }
+          />
+        </div>
+
+        {/* Content */}
+        <div>
+          <h2 className="text-xl font-semibold text-indigo-500 dark:text-indigo-300 mb-2">
+            🖋️ Content
+          </h2>
+          <RTE name="content" control={control} />
+        </div>
+
+        {/* Publishing Info */}
+        <div>
+          <h2 className="text-xl font-semibold text-indigo-500 dark:text-indigo-200 mb-2">
+            📦 Publishing Info
+          </h2>
+          <Input
+            label="Tags (comma separated)"
+            placeholder="eg. AI, WebDev, Cloud"
+            className="mb-4 mt-2 text-black dark:text-white dark:bg-gray-800"
+            {...register("tags", {
+              validate: (value) => {
+                if (typeof value === "string") {
+                  return value.split(",").length <= 5 || "Max 5 tags allowed";
+                }
+                return true;
+              },
+            })}
+          />
+          <div className="mt-4">
             <Select
               label="Status"
               options={["active", "inactive"]}
+              className="dark:text-white dark:bg-gray-800"
               {...register("status", { required: true })}
             />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-xl shadow transition"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="animate-spin w-5 h-5" />
-                  Uploading...{" "}
-                </>
-              ) : post ? (
-                "Update"
-              ) : (
-                "Submit"
-              )}
-            </button>
           </div>
-        </form>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          onClick={handleSubmit(onSubmit)}
+          className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 
+        text-white font-semibold py-2 px-4 rounded-xl shadow-xl transition-all duration-300 
+        flex items-center justify-center gap-2 disabled:opacity-50"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="animate-spin w-5 h-5" />
+              Uploading...
+            </>
+          ) : post ? (
+            "Update Post"
+          ) : (
+            <>
+              🚀 <span>Submit Post</span>
+            </>
+          )}
+        </button>
       </div>
     </div>
   );

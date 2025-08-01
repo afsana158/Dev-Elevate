@@ -10,6 +10,7 @@ import React, {
 export interface User {
   id: string;
   name: string;
+  username?: string; // Optional for backward compatibility
   email: string;
   avatar?: string;
   role: "user" | "admin";
@@ -201,7 +202,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   // Save auth state to localStorage
   useEffect(() => {
-    localStorage.setItem("devElevateAuth", JSON.stringify(state));
+    if (state.isAuthenticated && state.user && state.sessionToken) {
+      localStorage.setItem("devElevateAuth", JSON.stringify(state));
+    }
   }, [state]);
 
   const login = async (
@@ -283,11 +286,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       dispatch({ type: "LOGIN_FAILURE", payload: errorMessage });
     }
   };
-
-
-
-
-
 
   const register = async (
     name: string,
@@ -383,13 +381,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
       });
     }
   };
-
-
-
-
-
-
-
 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
