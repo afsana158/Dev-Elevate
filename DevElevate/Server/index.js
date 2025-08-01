@@ -10,15 +10,16 @@ import { authenticateToken } from "./middleware/authMiddleware.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import adminFeedbackRoutes from './routes/adminFeedbackRoutes.js';
 
+
+// Load environment variables
+dotenv.config();
+
 // Connect to MongoDB only if MONGO_URI is available
 if (process.env.MONGO_URI) {
   connectDB();
 } else {
   console.log('MongoDB connection skipped - PDF routes will work without database');
 }
-
-// Load environment variables
-dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
