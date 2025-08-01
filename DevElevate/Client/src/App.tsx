@@ -29,6 +29,8 @@ import PremiumPage from "./components/premium/PremiumPage";
 import PaymentPage from "./components/Payment/PaymentPage";
 import ProjectRecommender from "./components/ProjectRecommender/ProjectRecommender";
 import Layout from "./components/Layout/Layout";
+import Post from "./components/NewsPost/Post";
+import AddPost from "./components/NewsPost/AddPost";
 function App() {
   return (
     <AuthProvider>
@@ -86,6 +88,8 @@ function App() {
                               path="/disclaimer"
                               element={<Disclaimer />}
                             />
+                            <Route path="/news/:newsId" element={<Post/>} />
+                            <Route path="news/add-post" element={<AddPost/>}/>
                           </Routes>
                         </main>
                         <Footer />

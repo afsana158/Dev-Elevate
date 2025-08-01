@@ -10,10 +10,6 @@ import { authenticateToken } from "./middleware/authMiddleware.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import adminFeedbackRoutes from './routes/adminFeedbackRoutes.js';
 
-
-// Load environment variables
-dotenv.config();
-
 // Connect to MongoDB only if MONGO_URI is available
 if (process.env.MONGO_URI) {
   connectDB();
@@ -26,8 +22,9 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: "http://localhost:5173", // or wherever your FrontEnd or test.html is served
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
@@ -43,6 +40,8 @@ app.use("/api/v1", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/admin/courses", courseRoutes);
 app.use('/admin', adminFeedbackRoutes);
+app.use("/api/news", newsRoutes)
+app.use("/api/comments", commentRoutes);
 
 
 app.use("/",userRoutes)

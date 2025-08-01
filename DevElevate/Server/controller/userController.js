@@ -48,15 +48,18 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     const JWT_SECRET = process.env.JWT_SECRET;
     const JWT_EXPIRES = "3d";
+    console.log("jwt secret from login: ", JWT_SECRET)
     // Create JWT token
     const payLode = {
       userId: user._id,
+      role: user.role,
     };
     const token = jwt.sign(payLode, JWT_SECRET, { expiresIn: JWT_EXPIRES });
 
+    console.log("token from login: ", token)
     // Set token in cookie
     res
-      .cookie("token", token, {
+      .cookie("accessToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // true in production
         sameSite: process.env.NODE_ENV === "production" ? "Strict" : "Lax", // CSRF protection
@@ -75,6 +78,7 @@ export const loginUser = async (req, res) => {
         },
       });
   } catch (error) {
+    console.error("jwt verification error: ", error)
     res
       .status(500)
       .json({ message: "Something went wrong", error: error.message });
@@ -140,13 +144,13 @@ export const googleUser = async (req, res) => {
 
 export const logout = async (req, res) => {
   try {
-    const token = req.cookies.token;
+    const token = req.cookies.accessToken;
 
     if (!token) {
       return res.status(401).json({ message: "User already logout" });
     }
 
-    res.clearCookie("token", {
+    res.clearCookie("accessToken", {
       httpOnly: true,
       secure: true,
       sameSite: "None",
