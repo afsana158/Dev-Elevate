@@ -4,11 +4,14 @@ import connectDB from "./config/db.js";
 import cors from "cors"
 import userRoutes from './routes/userRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
+import newsRoutes from './routes/newsRoutes.js'
 import cookieParser from "cookie-parser";
 import authorize from "./middleware/authorize.js";
 import { authenticateToken } from "./middleware/authMiddleware.js";
 import courseRoutes from "./routes/courseRoutes.js";
 import adminFeedbackRoutes from './routes/adminFeedbackRoutes.js';
+
+dotenv.config();
 
 // Connect to MongoDB only if MONGO_URI is available
 if (process.env.MONGO_URI) {
